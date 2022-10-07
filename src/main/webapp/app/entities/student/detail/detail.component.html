@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="student">
+      <h2 class="row-md jh-entity-details">Profiles</h2>
+      <dl class="row-md jh-entity-details">
+
+        <dt><span>ID</span></dt>
+        <dd>{{ student.id }}</dd>
+
+        <dt><span>Code</span></dt>
+        <dd>{{ student.code }}</dd>
+
+        <dt><span>Full Name</span></dt>
+        <dd>{{ student.fullName }}</dd>
+
+        <dt><span>Gender</span></dt>
+        <dd>{{ student.gender }}</dd>
+
+        <dt><span>Grade</span></dt>
+        <dd>{{ student.grade }}</dd>
+
+        <dt><span>Point</span></dt>
+        <dd>{{ student.point }}</dd>
+
+      </dl>
+
+      <button type="submit" routerLink="../../" class="btn btn-info">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+    </div>
+  </div>
+</div>

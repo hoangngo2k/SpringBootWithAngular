@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()">
+  </button>
+</div>
+<div class="modal-body">
+  Min:
+  <input type="number" class="d-inline-block" #min>
+  Max:
+  <input type="number" class="d-inline-block" #max>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Close
+  </button>
+  <button type="button" class="btn btn-primary" (click)="saveValue(min.value, max.value)">Save</button>
+</div>

@@ -1,0 +1,143 @@
+<div>
+  <h2>
+    <span id="student-header">Student Management</span>
+  </h2>
+  <div class="">
+    <div class="w-100 position-relative">
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new student</span>
+      </button>
+      <button class="btn btn-danger justify-end" (click)="deleteStudent(ids)" [disabled]="isDeleted">
+        <fa-icon icon="times"></fa-icon>
+        <span class="d-none d-md-inline">Delete</span>
+      </button>
+      <div class="d-inline-block" style="position: absolute; right: 0">
+        <input type="text" #searchName [value]="name">
+        <button type="button" (click)="searchStudents(searchName.value)" class="btn btn-primary">
+          <fa-icon icon="search"></fa-icon>
+          Search
+        </button>
+        <button class="btn btn-info d-inline-block" (click)="refreshStudents()" #resetPage>
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span>Refresh</span>
+        </button>
+        <button type="button" class="btn btn-primary" (click)="openModal()">
+          <fa-icon icon="tasks"></fa-icon>
+          <span>Filter</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" *ngIf="students">
+    <table class="table table-striped" aria-describedby="user-management-page-heading">
+      <thead>
+      <tr>
+        <th scope="col" (click)="onClick($event)" id="id" style="cursor: pointer">ID
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col" (click)="onClick($event)" id="code" style="cursor: pointer">Code
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col" (click)="onClick($event)" id="fullName" style="cursor: pointer">Full Name
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col" (click)="onClick($event)" id="gender" style="cursor: pointer">Gender
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col" (click)="onClick($event)" id="grade" style="cursor: pointer">Grade
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col" (click)="onClick($event)" id="point" style="cursor: pointer">Point
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th>Selections</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <!--      <tbody></tbody>-->
+      <tbody *ngIf="students">
+      <tr *ngFor="let student of students">
+        <td>
+          <a [routerLink]="['./view', student.id]">{{ student.id }}</a>
+        </td>
+        <td>{{ student.code }}</td>
+        <td>{{ student.fullName }}</td>
+        <td>{{ student.gender }}</td>
+        <td>{{ student.grade }}</td>
+        <td>{{ student.point }}</td>
+        <td>
+          <input type="checkbox" [checked]="isChecked" [defaultValue]="student.id" (change)="handleChange($event)">
+        </td>
+        <td class="text-start">
+          <div class="btn-group">
+            <button type="submit" [routerLink]="['./view', student.id]" class="btn btn-info btn-sm">
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">View</span>
+            </button>
+
+            <button type="submit" [routerLink]="['./edit', student.id]" queryParamsHandling="merge"
+                    class="btn btn-primary btn-sm ms-1">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Edit</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="students">
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalStudents"
+        [pageSize]="5"
+        (pageChange)="transition($event)">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="myForm" (ngSubmit)="submit()">
+
+<!--  <div class="form-group">-->
+<!--    <label for="name">Name</label>-->
+<!--    <input-->
+<!--      formControlName="name"-->
+<!--      id="name"-->
+<!--      type="text"-->
+<!--      class="form-control">-->
+<!--    <div *ngIf="f.name.touched && f.name.invalid" class="alert alert-danger">-->
+<!--      <div *ngIf="f.name.errors && f.name.errors.required">Name is required.</div>-->
+<!--      <div *ngIf="f.name.errors && f.name.errors.minlength">Name should be 3 character.</div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="form-group">
+    <label for="file">File</label>
+    <input
+      formControlName="file"
+      id="file"
+      type="file"
+      multiple
+      class="form-control"
+      accept=".pdf,.xml,.doc,.docx"
+      (change)="onFileChange($event)">
+    <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+      <div *ngIf="f.file.errors && f.file.errors.required">File is required.</div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary button" type="submit">Submit</button>
+</form>
+<div class="button">
+  <button type="button" class="btn btn-info" (click)="getAllFile()">Get All File</button>
+  <ul *ngIf="fileName" class="mt-2">
+    <li *ngFor="let name of fileName" (click)="downloadFile(name)" class="mouse-type">{{name}}</li>
+  </ul>
+</div>
